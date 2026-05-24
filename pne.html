@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Apresiasi PnE · Maleo Leosan 5 · Balon & Terima Kasih</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(145deg, #fef9e6 0%, #fff3e0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Roboto', 'Poppins', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* KARTU UTAMA */
+        .card {
+            max-width: 550px;
+            width: 100%;
+            background: rgba(255, 255, 245, 0.95);
+            backdrop-filter: blur(2px);
+            border-radius: 64px 48px 64px 48px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 215, 150, 0.5);
+            overflow: hidden;
+            transition: all 0.2s ease;
+            padding: 28px 24px 40px;
+            text-align: center;
+            z-index: 20;
+            position: relative;
+        }
+
+        .screen {
+            transition: opacity 0.25s ease;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #b3413b;
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .sub {
+            color: #c45a4c;
+            font-weight: 500;
+            margin-bottom: 28px;
+            font-size: 1rem;
+            border-left: 3px solid #ff8a7a;
+            padding-left: 12px;
+            background: #fff2e6;
+            display: inline-block;
+            border-radius: 30px;
+            padding: 6px 16px;
+        }
+
+        .input-group {
+            margin: 30px 0 20px;
+        }
+        input {
+            width: 85%;
+            padding: 14px 18px;
+            font-size: 1.1rem;
+            border: 2px solid #ffc6b0;
+            border-radius: 60px;
+            outline: none;
+            text-align: center;
+            background: white;
+            font-weight: 500;
+            color: #2d2b26;
+            transition: 0.2s;
+        }
+        input:focus {
+            border-color: #e05a4f;
+            box-shadow: 0 0 0 3px rgba(224, 90, 79, 0.2);
+        }
+
+        button {
+            background: #e05a4f;
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 5px 0 #982b20;
+            margin-top: 12px;
+            width: auto;
+            min-width: 140px;
+        }
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #982b20;
+        }
+
+        .love-game-area {
+            margin: 20px 0;
+        }
+        .love-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 18px;
+            margin: 35px 0 30px;
+        }
+        .love-symbol {
+            font-size: 4rem;
+            cursor: pointer;
+            transition: transform 0.1s ease, filter 0.1s;
+            display: inline-block;
+            background: #fff0e7;
+            padding: 12px;
+            border-radius: 80px;
+            line-height: 1;
+            box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+        }
+        .love-symbol:active {
+            transform: scale(0.92);
+        }
+        .love-symbol.selected {
+            opacity: 0.5;
+            filter: grayscale(0.2);
+            transform: scale(0.9);
+            cursor: default;
+            pointer-events: none;
+        }
+        .progress-text {
+            font-size: 1.4rem;
+            font-weight: bold;
+            background: #fce2d8;
+            display: inline-block;
+            padding: 8px 24px;
+            border-radius: 50px;
+            color: #b1433a;
+        }
+
+        .result-box {
+            background: #f9ede5;
+            border-radius: 48px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .score-badge {
+            font-size: 3rem;
+            font-weight: 800;
+            background: white;
+            display: inline-block;
+            padding: 8px 24px;
+            border-radius: 60px;
+            margin: 12px;
+            color: #b3413b;
+            box-shadow: inset 0 -1px 0 #ffb49a, 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .message {
+            font-size: 1.3rem;
+            margin: 16px 0;
+        }
+
+        /* Animasi balon infinite - tetap meriah */
+        .balloon-celebrate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .balloon {
+            position: absolute;
+            bottom: -120px;
+            width: 55px;
+            height: 70px;
+            background: radial-gradient(circle at 30% 30%, #ffb7b2, #e34d3a);
+            border-radius: 50% 50% 50% 50%;
+            box-shadow: inset -5px -5px 0 rgba(0,0,0,0.05), 2px 8px 12px rgba(0,0,0,0.2);
+            animation: flyUp 3.5s ease-out forwards;
+        }
+        .balloon::after {
+            content: "🎈";
+            position: absolute;
+            font-size: 28px;
+            top: 8px;
+            left: 10px;
+            opacity: 0.4;
+        }
+        .balloon::before {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 22px;
+            width: 2px;
+            height: 22px;
+            background: #8b5a2b;
+        }
+        @keyframes flyUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120vh) rotate(15deg);
+                opacity: 0;
+            }
+        }
+
+        .footnote {
+            font-size: 0.7rem;
+            margin-top: 24px;
+            color: #d19484;
+        }
+
+        /* Tombol close celebration */
+        .close-celebrate-btn {
+            background: #e05a4f;
+            box-shadow: 0 6px 0 #982b20;
+            margin-top: 0;
+            transition: 0.07s linear;
+            border: none;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .close-celebrate-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #982b20;
+        }
+
+        @media (max-width: 550px) {
+            .card {
+                padding: 20px 16px 30px;
+            }
+            .love-symbol {
+                font-size: 3rem;
+                padding: 8px;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            .thanks-card {
+                width: 90%;
+                padding: 20px 16px !important;
+            }
+            .thanks-card h2 {
+                font-size: 1.6rem;
+            }
+        }
+        
+        /* Gaya untuk box terima kasih (tanpa card lama di belakang) */
+        .final-thanks-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3000;
+            width: 90%;
+            max-width: 500px;
+            background: rgba(255, 250, 240, 0.98);
+            backdrop-filter: blur(8px);
+            border-radius: 64px;
+            box-shadow: 0 30px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px #ffc8b0;
+            padding: 32px 24px 40px;
+            text-align: center;
+            animation: fadeInUp 0.4s ease-out;
+            pointer-events: auto;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+        
+        .final-thanks-container h2 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            color: #b3413b;
+        }
+        
+        .final-thanks-container .thankyou-name {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e05a4f, #ff8a6f);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 12px 0;
+            display: inline-block;
+            padding: 0 8px;
+        }
+        
+        .final-thanks-container .appreciation-text {
+            font-size: 1.2rem;
+            margin: 20px 0 16px;
+            color: #63382e;
+            line-height: 1.4;
+        }
+        
+        .final-thanks-container .close-final-btn {
+            background: #b3413b;
+            box-shadow: 0 5px 0 #65261e;
+            margin-top: 20px;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.07s linear;
+        }
+        
+        .final-thanks-container .close-final-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #65261e;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card" id="appRoot">
+    <!-- SCREEN 1: INPUT NAMA -->
+    <div id="screenName" class="screen">
+        <h2>💖 Maleo Leosan 5 💖</h2>
+        <div class="sub">Kamu Keren Banget!!✨</div>
+        <div class="input-group">
+            <input type="text" id="userNameInput" placeholder="Masukkan namamu..." autocomplete="off" maxlength="30">
+        </div>
+        <button id="nextBtn">NEXT</button>
+    </div>
+
+    <!-- SCREEN 2: GAME KLIK LOVE MERAH (5x) -->
+    <div id="screenGame" class="screen hidden">
+        <h2>❤️ Klik Simbol LOVE ❤️</h2>
+        <div class="sub">Kumpulkan 5 hati untuk rate vibes Maleo Leosan 5</div>
+        <div class="love-game-area">
+            <div class="love-grid" id="loveContainer"></div>
+            <div class="progress-text" id="clickCounterDisplay">0 / 5</div>
+        </div>
+        <div class="footnote">Klik hati merah mana pun — setiap hati hanya bisa diklik sekali</div>
+    </div>
+
+    <!-- SCREEN 3: HASIL BERHASIL & SKOR (5/5) -->
+    <div id="screenResult" class="screen hidden">
+        <h2 id="resultTitle">✨ Hasil ✨</h2>
+        <div class="result-box">
+            <div id="resultMessage" class="message">Memproses...</div>
+            <div class="score-badge" id="finalScoreSpan">0 / 5</div>
+            <button id="celebrateBtn">🎉 Lihat Kejutan Spesial 🎉</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ======================== GAME STATE ========================
+    let currentScreen = 'name';
+    let userName = '';
+    let totalCollected = 0;
+    let maxNeeded = 5;
+    let loveElements = [];
+    let clickedStatus = [];
+
+    // elemen global
+    const screenNameDiv = document.getElementById('screenName');
+    const screenGameDiv = document.getElementById('screenGame');
+    const screenResultDiv = document.getElementById('screenResult');
+    const userNameInput = document.getElementById('userNameInput');
+    const nextBtn = document.getElementById('nextBtn');
+    const loveContainer = document.getElementById('loveContainer');
+    const clickCounterDisplay = document.getElementById('clickCounterDisplay');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultMessageSpan = document.getElementById('resultMessage');
+    const finalScoreSpan = document.getElementById('finalScoreSpan');
+    const celebrateBtn = document.getElementById('celebrateBtn');
+
+    // Variabel untuk balon INFINITE & kontrol
+    let activeBalloonInterval = null;
+    let currentBalloonContainer = null;
+    let isCelebrationActive = false;
+
+    // ========== Helper tampilan layar ==========
+    function showScreen(screenId) {
+        screenNameDiv.classList.add('hidden');
+        screenGameDiv.classList.add('hidden');
+        screenResultDiv.classList.add('hidden');
+        if (screenId === 'name') screenNameDiv.classList.remove('hidden');
+        else if (screenId === 'game') screenGameDiv.classList.remove('hidden');
+        else if (screenId === 'result') screenResultDiv.classList.remove('hidden');
+        currentScreen = screenId;
+    }
+
+    // ========== Bangun game (10 love merah) ==========
+    function buildLoveGame() {
+        loveContainer.innerHTML = '';
+        loveElements = [];
+        clickedStatus = [];
+        const totalLoveItems = 10;
+        for (let i = 0; i < totalLoveItems; i++) {
+            const loveDiv = document.createElement('div');
+            loveDiv.className = 'love-symbol';
+            loveDiv.innerHTML = '❤️';
+            loveDiv.setAttribute('data-idx', i);
+            loveDiv.addEventListener('click', (function(index) {
+                return function() { handleLoveClick(index); };
+            })(i));
+            loveContainer.appendChild(loveDiv);
+            loveElements.push(loveDiv);
+            clickedStatus.push(false);
+        }
+        totalCollected = 0;
+        updateCounterUI();
+    }
+
+    function updateCounterUI() {
+        clickCounterDisplay.innerText = `${totalCollected} / ${maxNeeded}`;
+        if (totalCollected >= maxNeeded) {
+            clickCounterDisplay.style.background = "#c8e6b5";
+            clickCounterDisplay.style.color = "#2a5c2e";
+        } else {
+            clickCounterDisplay.style.background = "#fce2d8";
+            clickCounterDisplay.style.color = "#b1433a";
+        }
+    }
+
+    function handleLoveClick(index) {
+        if (totalCollected >= maxNeeded) return;
+        if (clickedStatus[index] === true) return;
+        
+        clickedStatus[index] = true;
+        loveElements[index].classList.add('selected');
+        loveElements[index].style.pointerEvents = 'none';
+        totalCollected++;
+        updateCounterUI();
+
+        if (totalCollected === maxNeeded) {
+            setTimeout(() => {
+                finishGameWithScore(5);
+            }, 300);
+        }
+    }
+
+    function finishGameWithScore(score) {
+        showResultScreen(score);
+    }
+
+    function showResultScreen(score) {
+        const success = (score === maxNeeded);
+        if (success) {
+            resultTitle.innerHTML = "🎉 SELAMAT! 🎉";
+            resultMessageSpan.innerHTML = `Anda berhasil mengumpulkan ${score} cinta untuk <strong>Maleo Leosan 5</strong>!`;
+        } else {
+            resultTitle.innerHTML = "😢 Belum Sempurna 😢";
+            resultMessageSpan.innerHTML = `Anda mengumpulkan ${score} dari 5 love. Coba lagi lain kali.`;
+        }
+        finalScoreSpan.innerText = `${score} / 5`;
+        showScreen('result');
+    }
+
+    // ========== RESET KE TAMPILAN AWAL (tanpa reload) ==========
+    function resetToInitialScreen() {
+        // Hentikan semua balon & bersihkan
+        if (activeBalloonInterval) {
+            clearInterval(activeBalloonInterval);
+            activeBalloonInterval = null;
+        }
+        if (currentBalloonContainer && currentBalloonContainer.remove) {
+            currentBalloonContainer.remove();
+            currentBalloonContainer = null;
+        }
+        // Hapus semua sisa balon yang mungkin tertinggal
+        const allBalloonContainers = document.querySelectorAll('.balloon-celebrate');
+        allBalloonContainers.forEach(container => container.remove());
+        
+        // Hapus box terima kasih jika masih ada
+        const thanksBox = document.querySelector('.final-thanks-container');
+        if (thanksBox) thanksBox.remove();
+        
+        // Reset state celebration flag
+        isCelebrationActive = false;
+        
+        // Tampilkan kembali card appRoot dengan opacity penuh
+        const appRoot = document.getElementById('appRoot');
+        if (appRoot) {
+            appRoot.style.opacity = '1';
+            appRoot.style.pointerEvents = 'auto';
+        }
+        
+        // Reset semua variabel game
+        userName = '';
+        totalCollected = 0;
+        
+        // Bersihkan input nama
+        userNameInput.value = '';
+        
+        // Rebuild game (untuk kondisi fresh)
+        buildLoveGame();
+        
+        // Tampilkan layar nama (awal)
+        showScreen('name');
+    }
+
+    // ========== BALON INFINITE + BOX TERIMA KASIH ==========
+    function startInfiniteBalloons() {
+        if (activeBalloonInterval) clearInterval(activeBalloonInterval);
+        
+        if (!currentBalloonContainer || !document.body.contains(currentBalloonContainer)) {
+            const newContainer = document.createElement('div');
+            newContainer.className = 'balloon-celebrate';
+            document.body.appendChild(newContainer);
+            currentBalloonContainer = newContainer;
+        } else {
+            currentBalloonContainer.innerHTML = '';
+        }
+        
+        function addBalloonWave() {
+            if (!currentBalloonContainer) return;
+            const balloonsPerWave = Math.floor(Math.random() * 10) + 8;
+            for (let i = 0; i < balloonsPerWave; i++) {
+                const balloon = document.createElement('div');
+                balloon.classList.add('balloon');
+                const variants = ['#e05a4f', '#f06050', '#ff7a64', '#ff4d3b', '#d63e2e', '#f58c7a', '#e35f46', '#ff8a6f'];
+                const randomColor = variants[Math.floor(Math.random() * variants.length)];
+                balloon.style.backgroundColor = randomColor;
+                balloon.style.left = Math.random() * 100 + '%';
+                const size = 45 + Math.random() * 38;
+                balloon.style.width = size + 'px';
+                balloon.style.height = (size * 1.2) + 'px';
+                const duration = 2.5 + Math.random() * 3.5;
+                balloon.style.animationDuration = duration + 's';
+                balloon.style.animationDelay = Math.random() * 1.8 + 's';
+                balloon.innerHTML = '❤️';
+                balloon.style.display = 'flex';
+                balloon.style.alignItems = 'center';
+                balloon.style.justifyContent = 'center';
+                balloon.style.fontSize = (size * 0.45) + 'px';
+                balloon.style.color = '#fff3cf';
+                currentBalloonContainer.appendChild(balloon);
+                
+                balloon.addEventListener('animationend', () => {
+                    if (balloon && balloon.remove) balloon.remove();
+                });
+            }
+        }
+        
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => addBalloonWave(), i * 400);
+        }
+        activeBalloonInterval = setInterval(() => {
+            if (currentBalloonContainer && isCelebrationActive) {
+                addBalloonWave();
+            } else if (!isCelebrationActive && activeBalloonInterval) {
+                clearInterval(activeBalloonInterval);
+                activeBalloonInterval = null;
+            }
+        }, 1300);
+    }
+    
+    // Menampilkan BOX TERIMA KASIH + BALON (tanpa sisa kartu lama)
+    function showPureThanksAndBalloons() {
+        if (isCelebrationActive) return;
+        isCelebrationActive = true;
+        
+        // Sembunyikan card utama (tapi tidak dihapus, hanya disembunyikan)
+        const appRoot = document.getElementById('appRoot');
+        if (appRoot) {
+            appRoot.style.opacity = '0';
+            appRoot.style.pointerEvents = 'none';
+            appRoot.style.transition = 'opacity 0.2s';
+        }
+        
+        // Mulai balon infinite
+        startInfiniteBalloons();
+        
+        // Buat BOX UCAPAN TERIMA KASIH
+        const thanksBox = document.createElement('div');
+        thanksBox.className = 'final-thanks-container';
+        thanksBox.innerHTML = `
+            <div style="font-size: 3rem;">🎈❤️🎈</div>
+            <h2>Terima Kasih!</h2>
+            <div class="thankyou-name">${escapeHtml(userName)}</div>
+            <div class="appreciation-text">
+                ✨ Kamu telah menjadi bagian dari suksesnya<br>
+                <strong>Maleo Leosan 5</strong> ✨
+            </div>
+            <div style="font-size: 1.8rem; margin: 12px 0;">❤️ 5/5 ❤️</div>
+            <button class="close-final-btn" id="closeThanksBtn">Tutup & Selesai</button>
+        `;
+        document.body.appendChild(thanksBox);
+        
+        // Event tombol tutup -> kembali ke tampilan awal (reset)
+        const closeBtn = document.getElementById('closeThanksBtn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                // Panggil fungsi reset ke tampilan awal
+                resetToInitialScreen();
+            });
+        }
+    }
+    
+    // simple escape HTML untuk nama
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // Fungsi utama untuk memulai perayaan (dipanggil dari tombol spesial)
+    function startCelebration() {
+        const scoreText = finalScoreSpan.innerText;
+        const currentScore = parseInt(scoreText.split('/')[0].trim());
+        if (currentScore === 5) {
+            if (isCelebrationActive) return;
+            showPureThanksAndBalloons();
+        } else {
+            alert(`Maaf ${userName}, skor Anda ${currentScore}/5, perlu mengumpulkan 5 love untuk merayakan. Silakan ulang game.`);
+            if(confirm('Apakah ingin memulai dari awal? (Halaman akan dimuat ulang)')) {
+                location.reload();
+            }
+        }
+    }
+    
+    // validasi nama & next
+    function onNext() {
+        let rawName = userNameInput.value.trim();
+        if (rawName === "") {
+            alert("Masukkan nama dulu ya ✨");
+            return;
+        }
+        userName = rawName;
+        totalCollected = 0;
+        buildLoveGame();
+        showScreen('game');
+    }
+    
+    // ========== EVENT LISTENER ==========
+    nextBtn.addEventListener('click', onNext);
+    userNameInput.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') onNext();
+    });
+    celebrateBtn.addEventListener('click', startCelebration);
+    
+    // ========== INITIAL SETUP ==========
+    function init() {
+        showScreen('name');
+        userNameInput.value = '';
+        buildLoveGame();
+        isCelebrationActive = false;
+        if (activeBalloonInterval) {
+            clearInterval(activeBalloonInterval);
+            activeBalloonInterval = null;
+        }
+        // pastikan appRoot tampil normal
+        const appRoot = document.getElementById('appRoot');
+        if (appRoot) {
+            appRoot.style.opacity = '1';
+            appRoot.style.pointerEvents = 'auto';
+        }
+        // hapus kemungkinan sisa container balon dari sesi sebelumnya
+        if (currentBalloonContainer && currentBalloonContainer.remove) currentBalloonContainer.remove();
+        currentBalloonContainer = null;
+        const oldBalloons = document.querySelectorAll('.balloon-celebrate');
+        oldBalloons.forEach(el => el.remove());
+        const oldThanks = document.querySelector('.final-thanks-container');
+        if(oldThanks) oldThanks.remove();
+        
+        // Reset userName jika diperlukan
+        userName = '';
+        userNameInput.value = '';
+    }
+    init();
+</script>
+</body>
+</html>
